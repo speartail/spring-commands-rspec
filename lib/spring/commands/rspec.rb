@@ -1,6 +1,16 @@
 module Spring
   module Commands
     class RSpec
+      def env(*)
+        return ENV['RAILS_ENV'] || 'test'
+
+        if ENV['RAILS_ENV'] && ENV['RAILS_ENV'] != 'development'
+          ENV['RAILS_ENV']
+        else
+          'test'
+        end
+      end
+
       def exec_name
         "rspec"
       end
@@ -16,6 +26,6 @@ module Spring
     end
 
     Spring.register_command "rspec", RSpec.new
-    Spring::Commands::Rake.environment_matchers[/^spec($|:)/] = ENV["RAILS_ENV"] || "test"
+    Spring::Commands::Rake.environment_matchers[/^spec($|:)/] = ENV['RAILS_ENV'] || 'test'
   end
 end
